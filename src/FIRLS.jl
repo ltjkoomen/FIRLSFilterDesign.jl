@@ -4,7 +4,8 @@ https://cnx.org/contents/6x7LNQOp@7/Linear-Phase-Fir-Filter-Design-By-Least-Squa
 https://www.dsprelated.com/Plishowarticle/808.php
 https://eeweb.engineering.nyu.edu/iselesni/EL713/zoom/linphase.pdf
 """
-import LinearAlgebra: I, Diagonal, UniformScaling
+# import LinearAlgebra: I, Diagonal, UniformScaling
+using LinearAlgebra
 
 export firls_design, freqz
 
@@ -72,7 +73,7 @@ function firls_design(filter_order::Integer, bands_DW::Matrix, D::Matrix, W::Mat
     filter_length, M = get_flength_M(filter_order)
     odd = isodd(filter_length)
     a = _calc_amplitude_coeff(M, bands_DW, D, W, solver, Val(odd), Val(antisymmetric))
-    h = _to_impulse_response(a, filter_length, Val(odd), Val(antisymmetric))
+    h = _to_impulse_response(a, Val(odd), Val(antisymmetric))
 end
 function firls_design(filter_order::Integer, bands_DW::Matrix, D::Matrix, W::Vector, antisymmetric::Bool; fs::Real = 1, solver::Function = \)
     firls_design(filter_order, bands_DW, D, hcat(W,W), antisymmetric; fs = fs, solver = solver)
@@ -82,7 +83,7 @@ function firls_design(filter_order::Integer, bands_DW::Matrix, D::Matrix, antisy
     filter_length, M = get_flength_M(filter_order)
     odd = isodd(filter_length)
     a = _calc_amplitude_coeff(M, bands_DW, D, solver, Val(odd), Val(antisymmetric))
-    h = _to_impulse_response(a, filter_length, Val(odd), Val(antisymmetric))
+    h = _to_impulse_response(a, Val(odd), Val(antisymmetric))
 end
 
 function _calc_amplitude_coeff(M, bands_DW, D, W, solver, odd, antisymmetric)
@@ -229,13 +230,6 @@ function constants_b(f, D, W::Matrix)
     return a, b, c, d, α, β, γ, δ, k
 end
 
-# constants_b(f, D, W::Matrix, odd::Val{true}) = _constants_b(f, D, W)
-# function constants_b(f, D, W::Matrix, odd::Val{false})
-#     a, b, c, d, α, β, γ, δ, k = _constants_b(f, D, W)
-#     # @. α += (π*k/2) * f
-#     return a, b, c, d, α, β, γ, δ, k
-# end
-
 function bn_n0!(_bn, n, k, f, a, b, c, d, _αn, _βn², γ, _δn, odd, antisymmetric)
     bn!(_bn, n, k, _αn, _βn², γ, _δn, antisymmetric)
 end
@@ -279,31 +273,34 @@ function _update_trig_arg_b!(_αn, n, antisymmetric::Val{true})
     _αn .-= π/2
 end
 
-function _to_impulse_response(a, filter_length, odd::Val{true}, antisymmetric::Val{false})
+function _to_impulse_response(a, odd::Val{true}, antisymmetric::Val{false})
     """ Type I linear phase FIR filter """
+    filter_length = 2length(a) - 1
     N_a, h = length(a), zeros(eltype(a), filter_length)
     h[1:N_a-1] .= @view(a[end:-1:2])
     h[N_a] = 2a[1]
     h[N_a+1:end] .= @view(a[2:end])
     return h
 end
-function _to_impulse_response(a, filter_length, odd::Val{false}, antisymmetric::Val{false})
+function _to_impulse_response(a, odd::Val{false}, antisymmetric::Val{false})
     """ Type II linear phase FIR filter """
+    filter_length = 2length(a)
     N_a, h = length(a), zeros(eltype(a), filter_length)
     h[1:N_a] .= @view(a[end:-1:1])
     h[N_a+1:end] .= a
     return h
 end
-function _to_impulse_response(a, filter_length, odd::Val{true}, antisymmetric::Val{true})
+function _to_impulse_response(a, odd::Val{true}, antisymmetric::Val{true})
     """ Type III linear phase FIR filter """
+    filter_length = 2length(a)-1
     N_a, h = length(a), zeros(eltype(a), filter_length)
     h[1:N_a-1] .= @view(a[end:-1:2])
-    h[N_a] = a[1]
     h[N_a+1:end] .-= @view(a[2:end])
     return h
 end
-function _to_impulse_response(a, filter_length, odd::Val{false}, antisymmetric::Val{true})
+function _to_impulse_response(a, odd::Val{false}, antisymmetric::Val{true})
     """ Type IV linear phase FIR filter """
+    filter_length = 2length(a)
     N_a, h = length(a), zeros(eltype(a), filter_length)
     h[1:N_a] .= @view(a[end:-1:1])
     h[N_a+1:end] .-= a
