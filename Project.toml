@@ -3,6 +3,9 @@ uuid = "1d969ca1-ee82-491a-b198-7f2f63a25c18"
 authors = ["Lenard Koomen <l.koomen92@gmail.com> and contributors"]
 version = "0.1.0"
 
+[deps]
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+
 [compat]
 julia = "1"
 
