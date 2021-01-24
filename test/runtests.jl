@@ -131,7 +131,7 @@ bs_fixed_data = [
     ]
 ]
 
-hs_fixed = all_perms_firlsdesign(bands_D_mat, D, W)
+hs_fixed = all_perms_firlsdesign(bands_D_mat, D_mat, W_mat)
 hs_fixed_data = [
     [
         0.07788241325853798

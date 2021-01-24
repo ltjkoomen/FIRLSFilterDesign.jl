@@ -4,8 +4,9 @@ https://cnx.org/contents/6x7LNQOp@7/Linear-Phase-Fir-Filter-Design-By-Least-Squa
 https://www.dsprelated.com/Plishowarticle/808.php
 https://eeweb.engineering.nyu.edu/iselesni/EL713/zoom/linphase.pdf
 """
-# import LinearAlgebra: I, Diagonal, UniformScaling
+# using LinearAlgebra
 using LinearAlgebra
+import LinearAlgebra: I, Diagonal, UniformScaling
 
 export firls_design, freqz
 
