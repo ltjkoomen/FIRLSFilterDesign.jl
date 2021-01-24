@@ -8,7 +8,7 @@ https://eeweb.engineering.nyu.edu/iselesni/EL713/zoom/linphase.pdf
 using LinearAlgebra
 import LinearAlgebra: I, Diagonal, UniformScaling
 
-export firls_design, freqz
+export firls_design
 
 function validate_inputs(filter_order, bands_D, D, fs)
     @assert filter_order >= 0 "Filter order cannot be negative."
