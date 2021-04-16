@@ -1,7 +1,7 @@
 # Manual
 
 ## Installation
-To install FIRLS.jl, open up julia and do:
+To install FIRLS.jl, open up a Julia REPL and do:
 ```julia
 pkg> update
 pkg> add FIRLS
