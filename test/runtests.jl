@@ -15,36 +15,36 @@ vec2mat(vec) = @views hcat(vec[1:end-1], vec[2:end])
 
 function all_perms_q(f,W)
     M = 5
-    q_odd = FIRLS.get_q(M, f, W, Val(true))
-    q_even = FIRLS.get_q(M, f, W, Val(false))
+    q_odd = FIRLS.get_q(M, f, W, FIRLS.FIR_I())
+    q_even = FIRLS.get_q(M, f, W, FIRLS.FIR_II())
     return q_odd, q_even
 end
 
 function all_perms_b(f,W,D)
     M = 5
-    b_odd_symmetric         = FIRLS.get_b(M, f, D, W, Val(true),  Val(false))
-    b_even_symmetric        = FIRLS.get_b(M, f, D, W, Val(false), Val(false))
-    b_odd_antisymmetric     = FIRLS.get_b(M, f, D, W, Val(true),  Val(true))
-    b_even_antisymmetric    = FIRLS.get_b(M, f, D, W, Val(false), Val(true))
-    return b_odd_symmetric, b_even_symmetric, b_odd_antisymmetric, b_even_antisymmetric
+    b_FIR_I     = FIRLS.get_b(M, f, D, W, FIRLS.FIR_I())
+    b_FIR_II    = FIRLS.get_b(M, f, D, W, FIRLS.FIR_II())
+    b_FIR_III   = FIRLS.get_b(M, f, D, W, FIRLS.FIR_III())
+    b_FIR_IV    = FIRLS.get_b(M, f, D, W, FIRLS.FIR_IV())
+    return b_FIR_I, b_FIR_II, b_FIR_III, b_FIR_IV
 end
 
 function all_perms_firlsdesign(args...; kwargs...)
     order_odd = 10
     order_even = order_odd + 1
-    h_odd_symmetric      = firls_design(order_odd,  args..., false; kwargs...)
-    h_even_symmetric     = firls_design(order_even, args..., false; kwargs...)
-    h_odd_antisymmetric  = firls_design(order_odd,  args..., true;  kwargs...)
-    h_even_antisymmetric = firls_design(order_even, args..., true;  kwargs...)
-    return h_odd_symmetric, h_even_symmetric, h_odd_antisymmetric, h_even_antisymmetric
+    h_FIR_I     = firls_design(order_odd,  args..., false; kwargs...)
+    h_FIR_II    = firls_design(order_even, args..., false; kwargs...)
+    h_FIR_III   = firls_design(order_odd,  args..., true;  kwargs...)
+    h_FIR_IV    = firls_design(order_even, args..., true;  kwargs...)
+    return h_FIR_I, h_FIR_II, h_FIR_III, h_FIR_IV
 end
 
 function all_perms_toimpulseresponse(a)
-    h_odd_symmetric      = FIRLS._to_impulse_response(a, Val(true), Val(false))
-    h_even_symmetric     = FIRLS._to_impulse_response(a, Val(false), Val(false))
-    h_odd_antisymmetric  = FIRLS._to_impulse_response(a, Val(true), Val(true))
-    h_even_antisymmetric = FIRLS._to_impulse_response(a, Val(false), Val(true))
-    return h_odd_symmetric, h_even_symmetric, h_odd_antisymmetric, h_even_antisymmetric
+    h_FIR_I     = FIRLS._to_impulse_response(a, FIRLS.FIR_I())
+    h_FIR_II    = FIRLS._to_impulse_response(a, FIRLS.FIR_II())
+    h_FIR_III   = FIRLS._to_impulse_response(a, FIRLS.FIR_III())
+    h_FIR_IV    = FIRLS._to_impulse_response(a, FIRLS.FIR_IV())
+    return h_FIR_I, h_FIR_II, h_FIR_III, h_FIR_IV
 end
 
 # Randomized inputs
@@ -219,7 +219,7 @@ all_approx(x,y) = all(@. abs(x - y) < 1e16)
     @test all(halfs[2][1] .==  halfs[2][2]) # even filter length, symmetric
     @test all(halfs[3][1] .== -halfs[3][2]) # odd  filter length, antisymmetric
     @test all(halfs[4][1] .== -halfs[4][2]) # even filter length, antisymmetric
-    # Tests that show equivalence between passing no weights, passing all equal weights
+    # Tests that show equivalence between passing no weights and passing all equal weights
     @test all_approx(hs_rand1[1], hs_rand2[1]) # odd  filter length, symmetric
     @test all_approx(hs_rand1[2], hs_rand2[2]) # even filter length, symmetric
     @test all_approx(hs_rand1[3], hs_rand2[3]) # odd  filter length, antisymmetric
