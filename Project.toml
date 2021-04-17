@@ -1,4 +1,4 @@
-name = "FIRLS"
+name = "FIRLSFilterDesign"
 uuid = "1d969ca1-ee82-491a-b198-7f2f63a25c18"
 authors = ["Lenard Koomen <l.koomen92@gmail.com> and contributors"]
 version = "0.1.0"
