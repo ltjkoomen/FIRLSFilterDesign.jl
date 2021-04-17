@@ -1,12 +1,12 @@
 using Documenter
-using FIRLS
+using FIRLSFilterDesign
 
 makedocs(
     clean = false,
     doctest = false,
-    sitename = "FIRLS.jl documentation",
+    sitename = "FIRLSFilterDesign.jl documentation",
     expandfirst = [],
-    modules = [FIRLS],
+    modules = [FIRLSFilterDesign],
     pages = [
         "Home" => "index.md",
         "Manual" => "manual.md"

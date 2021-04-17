@@ -1,10 +1,10 @@
 # Manual
 
 ## Installation
-To install FIRLS.jl, open up a Julia REPL and do:
+To install FIRLSFilterDesign.jl, open up a Julia REPL and do:
 ```julia
 pkg> update
-pkg> add FIRLS
+pkg> add FIRLSFilterDesign
 ```
 
 ## Usage
@@ -14,7 +14,7 @@ Let's say we want to design a bandpass filter with a passband from *1 Hz* to *2 
 
 We can do this as follows:
 ```@repl
-using FIRLS;
+using FIRLSFilterDesign;
 fs = 6;
 filter_order = 10;
 antisymmetric = false;
@@ -36,7 +36,7 @@ D = [0. 0.; 1. 1.; 0. 0.];
 
 Now we can design the filter:
 ```@setup A
-using FIRLS;
+using FIRLSFilterDesign;
 fs = 6;
 filter_order = 10;
 antisymmetric = false;
@@ -55,7 +55,7 @@ W = [1 2; 2 2; 2 1];
 
 Now we can design the filter with the weight function:
 ```@setup A
-using FIRLS;
+using FIRLSFilterDesign;
 fs = 6;
 filter_order = 10;
 antisymmetric = false;
@@ -80,5 +80,5 @@ You can use the `firls_design` function with several different input shapes for 
 
 ## Functions
 ```@autodocs
-Modules = [FIRLS]
+Modules = [FIRLSFilterDesign]
 ```

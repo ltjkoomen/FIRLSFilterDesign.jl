@@ -1,4 +1,4 @@
-module FIRLS
+module FIRLSFilterDesign
 """
 https://cnx.org/contents/6x7LNQOp@7/Linear-Phase-Fir-Filter-Design-By-Least-Squares
 https://www.dsprelated.com/Plishowarticle/808.php

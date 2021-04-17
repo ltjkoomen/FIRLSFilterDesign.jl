@@ -1,4 +1,4 @@
-using FIRLS
+using FIRLSFilterDesign
 using Test
 
 function generate_bands_vec(N; n_duplicates = 0, fs = 1.)
@@ -15,17 +15,17 @@ vec2mat(vec) = @views hcat(vec[1:end-1], vec[2:end])
 
 function all_perms_q(f,W)
     M = 5
-    q_odd = FIRLS.get_q(M, f, W, FIRLS.FIR_I())
-    q_even = FIRLS.get_q(M, f, W, FIRLS.FIR_II())
+    q_odd = FIRLSFilterDesign.get_q(M, f, W, FIRLSFilterDesign.FIR_I())
+    q_even = FIRLSFilterDesign.get_q(M, f, W, FIRLSFilterDesign.FIR_II())
     return q_odd, q_even
 end
 
 function all_perms_b(f,W,D)
     M = 5
-    b_FIR_I     = FIRLS.get_b(M, f, D, W, FIRLS.FIR_I())
-    b_FIR_II    = FIRLS.get_b(M, f, D, W, FIRLS.FIR_II())
-    b_FIR_III   = FIRLS.get_b(M, f, D, W, FIRLS.FIR_III())
-    b_FIR_IV    = FIRLS.get_b(M, f, D, W, FIRLS.FIR_IV())
+    b_FIR_I     = FIRLSFilterDesign.get_b(M, f, D, W, FIRLSFilterDesign.FIR_I())
+    b_FIR_II    = FIRLSFilterDesign.get_b(M, f, D, W, FIRLSFilterDesign.FIR_II())
+    b_FIR_III   = FIRLSFilterDesign.get_b(M, f, D, W, FIRLSFilterDesign.FIR_III())
+    b_FIR_IV    = FIRLSFilterDesign.get_b(M, f, D, W, FIRLSFilterDesign.FIR_IV())
     return b_FIR_I, b_FIR_II, b_FIR_III, b_FIR_IV
 end
 
@@ -40,10 +40,10 @@ function all_perms_firlsdesign(args...; kwargs...)
 end
 
 function all_perms_toimpulseresponse(a)
-    h_FIR_I     = FIRLS._to_impulse_response(a, FIRLS.FIR_I())
-    h_FIR_II    = FIRLS._to_impulse_response(a, FIRLS.FIR_II())
-    h_FIR_III   = FIRLS._to_impulse_response(a, FIRLS.FIR_III())
-    h_FIR_IV    = FIRLS._to_impulse_response(a, FIRLS.FIR_IV())
+    h_FIR_I     = FIRLSFilterDesign._to_impulse_response(a, FIRLSFilterDesign.FIR_I())
+    h_FIR_II    = FIRLSFilterDesign._to_impulse_response(a, FIRLSFilterDesign.FIR_II())
+    h_FIR_III   = FIRLSFilterDesign._to_impulse_response(a, FIRLSFilterDesign.FIR_III())
+    h_FIR_IV    = FIRLSFilterDesign._to_impulse_response(a, FIRLSFilterDesign.FIR_IV())
     return h_FIR_I, h_FIR_II, h_FIR_III, h_FIR_IV
 end
 
@@ -204,7 +204,7 @@ halfs = get_half.(results)
 
 all_approx(x,y) = all(@. abs(x - y) < 1e16) 
 
-@testset "FIRLS.jl" begin
+@testset "FIRLSFilterDesign.jl" begin
     # q vector test
     @test all_approx(qs_fixed[1], qs_fixed[2][1:end-1])
     @test all_approx(qs_fixed[1], qs_fixed_data[1]) # odd filter length
